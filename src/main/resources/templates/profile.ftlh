@@ -23,14 +23,12 @@
         </#if>
         <a class="btn btn-dark mb-3" style="text-align: center; width: 100%"
            href="/my/products">
-            Мои товары
+            My products
         </a>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit" style="text-align: center; width: 100%" class="btn btn-danger mb-2">
-                Выйти из аккаунта
-            </button>
-        </form>
+        <a class="btn btn-dark mb-3" style="text-align: center; width: 100%"
+           href="/user/cashAccount">
+            Balance: ${cashAccount.balance}
+        </a>
     </div>
 
 </@t.template>

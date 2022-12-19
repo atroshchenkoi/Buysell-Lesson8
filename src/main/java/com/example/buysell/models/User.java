@@ -1,72 +1,79 @@
 package com.example.buysell.models;
 
 import com.example.buysell.models.enums.Role;
+import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.util.*;
 
 @Entity
 @Table(name = "users")
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-
-    @Column(unique = true, updatable = false)
+    @Email(message = "Email is not found")
+    @Column(unique = true, updatable = false, length = 50, nullable = false)
     private String email;
+    @NotBlank(message = "Please fill the number")
+    @Pattern(regexp = "\\+375[0-9]{9}", message = "Bad formed number...")
+    @Column(length = 15, nullable = false)
     private String phoneNumber;
-
-
+    @NotBlank(message = "Please fill the name")
+    @Length(min = 4, max = 30, message = "Error name length")
+    @Column(length = 30, nullable = false)
     private String name;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn
-    private Image avatar;
     private boolean active;
     private String activationCode;
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private String password;
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id"))
+    joinColumns = @JoinColumn(name = "user_id"), uniqueConstraints = @UniqueConstraint( columnNames = {"user_id", "roles"}))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
-    mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user",
+            orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
-
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    @Transient
+    private CashAccount cashAccount;
+    public CashAccount getCashAccount() {
+        return cashAccount;
+    }
+    public void addCashAccount(CashAccount cashAccount){
+        this.cashAccount = cashAccount;
+        cashAccount.setUser(this);
+    }
+    public void removeCashAccount() {
+        if ((cashAccount != null)){
+            cashAccount.setUser(null);
+        }
+        this.cashAccount = null;
+    }
     public void addProductToUser(Product product) {
         product.setUser(this);
         products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        product.setUser(null);
+        products.remove(product);
     }
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);
     }
 
-    public Image getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Image avatar) {
-        this.avatar = avatar;
-    }
-
     public List<Product> getProducts() {
         return products;
     }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     public Long getId() {
         return id;
     }

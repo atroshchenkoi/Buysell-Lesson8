@@ -28,15 +28,7 @@
                         <div class="col-8"></div>
                         <#if user.email??>
                             <div class="col-1 align-items-center">
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Profile
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="/profile">Account</a></li>
-                                        <li><a class="dropdown-item" href="#">Basket</a></li>
-                                    </ul>
-                                </div>
+                                <button type="button" class="btn btn-light me-2" onclick="window.location.href = '/profile'">Profile</button>
                             </div>
 
                             <div class="col-1 align-items-center">
@@ -68,14 +60,6 @@
                     <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                     </a>
-
-                    <ul class="nav col-md-4 justify-content-end">
-                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-                    </ul>
                 </footer>
             </div>
             <!--FOOTER END-->

@@ -1,9 +1,12 @@
 package com.example.buysell.models;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "images")
+@ToString
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +18,8 @@ public class Image {
     private boolean previewImage;
     @Lob
     private byte[] bytes;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(optional=true)
+
     private Product product;
 
     public Long getId() {

@@ -3,21 +3,22 @@
     <h1 style="text-align: center">My products</h1>
     <hr>
     <a class="btn btn-dark mt-3 mb-3" style="text-align: center; width: 100%"
-        data-bs-toggle="collapse" href="#collapseExample" role="button"
-        aria-expanded="false" aria-controls="collapseExample">
+       data-bs-toggle="collapse" href="#collapseExample" role="button"
+       aria-expanded="false" aria-controls="collapseExample">
         New product
     </a>
     <div class="collapse mb-3" id="collapseExample" style="">
         <form action="/product/create" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="productName">Name product</label>
-                <input type="text" required class="form-control"
-                       id="productName" name="title">
+                <label for="title">Title</label>
+                <input type="text" required class="form-control" minlength="20" maxlength="50"
+                       placeholder="20 - 50 chars" id="title" name="title">
             </div>
             <div class="form-group">
                 <label for="price">Price</label>
                 <div class="input-group mb-3">
-                    <input type="number" required class="form-control" id="price" name="price">
+                    <input type="number" required class="form-control" pattern="\d+(\.\d{2})?" step="0.01" id="price"
+                           name="price">
                     <div class="input-group-append">
                         <span class="input-group-text">BYN</span>
                     </div>
@@ -50,7 +51,8 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea required class="form-control" id="description" name="description"></textarea>
+                <textarea required class="form-control" id="description" minlength="100" maxlength="1000"
+                          placeholder="100 - 1000 chars" name="description"></textarea>
             </div>
             <br>
             <div class="form-group">
@@ -73,36 +75,38 @@
                     <label class="custom-file-label" for="file3">Third photo</label>
                 </div>
             </div>
+            <span class="fs-4 fw-semibold text-center">Ad fee is 3 BYN</span>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <br>
             <button type="submit" style="width: 100%" class="btn btn-dark">Add</button>
         </form>
     </div>
-    <div class="card-columns">
-        <#list products as product>
-            <a href="/product/${product.id}" class="product-link">
-                <div class="card text-white bg-dark my-3 product">
-                    <div class="card-top">
-                        <form action="/product/delete/${product.id}" method="post">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                            <button type="submit" class="btn btn-danger m-3">
-                                Удалить
-                            </button>
-                        </form>
+    <div class="album py-5 ">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <#list products as product>
+                    <div class="card text-white bg-dark my-3 product" style="margin-right: 1rem;">
+                        <div class="card-top">
+                            <form action="/product/delete/${product.id}" method="post">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                                <button type="submit" class="btn btn-danger m-3">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                        <img src="/images/${product.previewImageId}"
+                             class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.title}</h5>
+                            <p class="card-text">${product.price} ₽</p>
+                        </div>
+                        <div class="card-footer">
+                            ${product.city}
+                        </div>
                     </div>
-                    <img src="/images/${product.previewImageId}"
-                         class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">${product.title}</h5>
-                        <p class="card-text">${product.price} ₽</p>
-                    </div>
-                    <div class="card-footer">
-                        ${product.city}
-                    </div>
-                </div>
-            </a>
-        <#else>
-            <h1 style="text-align: center">No products</h1>
-        </#list>
+                </#list>
+            </div>
+        </div>
     </div>
 </@t.template>

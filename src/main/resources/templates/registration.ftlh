@@ -5,7 +5,7 @@
     <form action="/registration" method="post">
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" required id="name" name="name">
+            <input type="text" class="form-control" minlength="4" maxlength="30" required id="name" name="name">
         </div>
         <div class="form-group">
             <label for="email">Email</label>
@@ -13,11 +13,12 @@
         </div>
         <div class="form-group">
             <label for="phoneNumber">Telephone number</label>
-            <input type="text" class="form-control" id="phoneNumber" required name="phoneNumber">
+            <input type="text" class="form-control" pattern="\+375[0-9]{9}" placeholder="+375(**)*******" id="phoneNumber" required name="phoneNumber">
+
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" required name="password">
+            <input type="password" class="form-control" minlength="7" id="password" required name="password">
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <hr>
